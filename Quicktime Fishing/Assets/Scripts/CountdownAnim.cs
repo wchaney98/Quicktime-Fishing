@@ -25,8 +25,6 @@ public class CountdownAnim : MonoBehaviour
         twoTime = 0.5f;
         oneTime = 0.9f;
 
-        timeElapsedSinceSpriteChanged = 0f;
-
         currentNum = 3;
 
         timeLinkDict.Add(3, threeTime);
@@ -49,7 +47,10 @@ public class CountdownAnim : MonoBehaviour
     {
         currentNum -= 1;
         if (currentNum <= 0)
+        {
             Destroy(transform.parent.gameObject);
-        animPlayer.Play("321CountDown", 0, timeLinkDict[currentNum]); 
+            return;
+        }
+        animPlayer.Play("321CountDown", 0, timeLinkDict[currentNum]);
     }
 }
