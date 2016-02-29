@@ -30,8 +30,6 @@ public class QuickTimeObject : MonoBehaviour
 
     void OnMouseDown()
     {
-        // Todo: generate next quicktime event? make sequence for catching a fish?
-        Debug.Log("was pressed");
         Destroy(transform.parent.gameObject);
     }
 }
