@@ -6,8 +6,8 @@ using UnityEngine;
 
 public abstract class Location 
 {
-    public abstract RarityColor ColorBonus { get; }
+    public abstract Color ColorBonus { get; }
     public abstract int[] OptimalFishingHours { get; }
-    public abstract bool FirstNumPM { get; }
-    public abstract bool SecondNumPM { get; }
+
+    public float BaseColorChance = 0.1f;
 }

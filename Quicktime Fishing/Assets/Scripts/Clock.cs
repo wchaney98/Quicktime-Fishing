@@ -6,32 +6,28 @@ public class Clock : MonoBehaviour
     int dayCount;
     int hour;
     int minute;
-    bool _PM;
 
     public int DayCount { get { return dayCount; } }
     public int Hour { get { return hour; } }
     public int Minute { get { return minute; } }
-    public bool PM { get { return _PM; } }
 
     float timeSinceLastMinuteIncrement;
-    const float secondsPerMinute = 1f;
+    const float secondsPerGameMinute = 0.01f;
 
 	void Start ()
     {
-        hour = 0;
+        hour = 23;
         minute = 0;
         timeSinceLastMinuteIncrement = 0;
-        _PM = false;
 	}
 	
 	void Update ()
     {
-        Debug.Log("update");
         timeSinceLastMinuteIncrement += Time.deltaTime;
         int tempMinute = minute;
         int tempHour = hour;
 
-        if (timeSinceLastMinuteIncrement >= secondsPerMinute)
+        if (timeSinceLastMinuteIncrement >= secondsPerGameMinute)
         {
             tempMinute += 1;
             timeSinceLastMinuteIncrement = 0;
@@ -41,17 +37,20 @@ public class Clock : MonoBehaviour
             tempMinute = 0;
             tempHour += 1;
         }
-        if (tempHour > 11)
+        if (tempHour > 23)
         {
-            _PM = !_PM;
             tempHour = 0;
+            dayCount += 1;
         }
-        //fix am pm and day count
 
         minute = tempMinute;
         hour = tempHour;
 	}
 
+    /// <summary>
+    /// Get the time in a H:MM display
+    /// </summary>
+    /// <returns>The time in a H:MM display</returns>
     public string GetFullTime()
     {
         string displayMinute;
@@ -64,10 +63,6 @@ public class Clock : MonoBehaviour
             displayMinute = minute.ToString();
         }
 
-        if (_PM)
-        {
-            return hour + ":" + displayMinute + " PM";
-        }
-        return hour + ":" + displayMinute + " AM";
+        return hour + ":" + displayMinute;
     }
 }

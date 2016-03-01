@@ -7,21 +7,26 @@ public class GameManager : MonoBehaviour
 
     QuickTimeManager QTM;
     Clock clock;
-    LocationManager location;
+    LocationManager LM;
 
 
 	void Start ()
     {
         QTM = new QuickTimeManager();
         clock = GetComponent<Clock>();
-        location = new LocationManager();
+        LM = new LocationManager();
 
-        location.Initialize(FishingLocation.FishVille);
-        Debug.Log(location.CurrentLocColorBonus + ", " + location.CurrentLocOptimalFishingHours[0] + " " + location.CurrentLocOptimalFishingHours[1]);
-	}
+        LM.Initialize(FishingLocation.BingoBango);
+        //Debug.Log(location.CurrentLocColorBonus + ", " + location.CurrentLocOptimalFishingHours[0] + " " + location.CurrentLocOptimalFishingHours[1]);
+        Debug.Log(FishLoot.GenerateName(LM));
+
+        LM.Initialize(FishingLocation.HolyShrimp);
+        Debug.Log(FishLoot.GenerateName(LM));
+
+    }
 	
 	void Update ()
     {
 
-	}
+    }
 }

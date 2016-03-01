@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class QuickTimeManager : MonoBehaviour
+public class QuickTimeManager
 {
-
+    // Monobehaviour implementation removed for now
 	void Start ()
     {
 	
