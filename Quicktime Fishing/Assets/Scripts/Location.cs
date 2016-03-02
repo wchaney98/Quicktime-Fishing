@@ -6,8 +6,18 @@ using UnityEngine;
 
 public abstract class Location 
 {
-    public abstract Color ColorBonus { get; }
-    public abstract int[] OptimalFishingHours { get; }
+    Color colorBonus;
+    int[] optimalFishingHours;
+    string[] prefixes;
 
-    public float BaseColorChance = 0.1f;
+    public Location(Color colorBonus, int[] optimalFishingHours, string[] prefixes)
+    {
+        this.colorBonus = colorBonus;
+        this.optimalFishingHours = optimalFishingHours;
+        this.prefixes = prefixes;
+    }
+
+    public virtual Color ColorBonus { get { return colorBonus; } }
+    public virtual int[] OptimalFishingHours { get { return optimalFishingHours; } }
+    public virtual string[] Prefixes { get { return prefixes; } }
 }

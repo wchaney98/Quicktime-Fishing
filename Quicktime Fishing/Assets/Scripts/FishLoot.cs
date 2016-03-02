@@ -4,42 +4,23 @@ using System.Text;
 
 public class FishLoot
 {
-    // do prefixes work?
-    static string[] FishVillePrefixes = new string[] { "Blue", "Bristlenose" };
-    static string[] LargeBodyOfWaterPrefixes = new string[] { "Red", "Freshwater" };
-    static string[] BingoBangoPrefixes = new string[] { "Green", "Flabby" };
-    static string[] HolyShrimpPrefixes = new string[] { "Golden", "Bigeye" };
-
     static string[] FishNames = new string[] { "Shiner", "Trout", "Shad", "Guppy" };
 
-    float bonusAmount = 0.3f;
+    Color[] colors = new Color[] { Color.blue, Color.red, Color.green, Color.yellow };
+
+    float baseColorChance = 0.1f;
+    float bonusLocationColorAmount = 0.2f;
+    float bonusOptimalFishingHourAmount = 0.2f;
 
     // catch fish, generates name, roll color on each letter
 
-	public static string GenerateName(LocationManager LM)
+    public static string GenerateName(LocationManager LM)
     {
         StringBuilder name = new StringBuilder();
-        
-        //change to polymorphism
-        switch (LM.CurrentFishingLoc)
-        {
-            case FishingLocation.FishVille:
-                name.Append(FishVillePrefixes[Random.Range(0, FishVillePrefixes.Length)]);
-                break;
+        int roll = Random.Range(0, LM.CurrentLoc.Prefixes.Length);
 
-            case FishingLocation.LargeBodyOfWater:
-                name.Append(LargeBodyOfWaterPrefixes[Random.Range(0, LargeBodyOfWaterPrefixes.Length)]);
-                break;
-
-            case FishingLocation.BingoBango:
-                name.Append(BingoBangoPrefixes[Random.Range(0, BingoBangoPrefixes.Length)]);
-                break;
-
-            case FishingLocation.HolyShrimp:
-                name.Append(HolyShrimpPrefixes[Random.Range(0, HolyShrimpPrefixes.Length)]);
-                break;
-        }
-
+        string prefix = LM.CurrentLoc.Prefixes[roll];
+        name.Append(prefix);
         name.Append(" ");
         name.Append(FishNames[Random.Range(0, FishNames.Length)]);
 
@@ -47,14 +28,40 @@ public class FishLoot
     }
 
     // include clock and location specific bonuses
-    Color rollColor(char letter, LocationManager LM)
+    Color rollColor(char letter, LocationManager LM, Clock clock)
     {
         float roll = Random.Range(0f, 1f);
+        float chance = baseColorChance;
 
-        if (roll <= LM.CurrentLoc.BaseColorChance)
+        // Check if bonus time and apply bonus to base chance
+        if (clock.Hour >= LM.CurrentLoc.OptimalFishingHours[0] && clock.Hour <= LM.CurrentLoc.OptimalFishingHours[1])
         {
-            return Color.black;
+            chance += bonusOptimalFishingHourAmount;
         }
-        return Color.black;
+
+        // Add bonus chance to location's bonus color
+        Color bonusColor = LM.CurrentLoc.ColorBonus;
+        float bonusColorChance = chance += bonusLocationColorAmount;
+           
+        // Roll and return a color
+        if (roll <= bonusColorChance)
+        {
+            return bonusColor;
+        } else if (roll <= chance)
+        {
+            int colorRoll = Random.Range(0, 4);
+            return colors[colorRoll];
+        } else
+        {
+            return Color.grey;
+        }       
     }
+
+    // function to generate worth of fish based on number of different colors and how many colored characters
+
+
+    // function to convert the fish to markup text
+
+
+    // fish class to store markup info and backend info
 }

@@ -49,11 +49,7 @@ public enum FishingLocation : byte { FishVille, LargeBodyOfWater, BingoBango, Ho
 /// </summary>
 class FishVille : Location
 {
-    Color colorBonus = Color.blue;
-    int[] optimalFishingHours = new int[2] { 4, 12 };
-
-    public override Color ColorBonus { get { return colorBonus; } }
-    public override int[] OptimalFishingHours { get { return optimalFishingHours; } }
+    public FishVille(): base(Color.blue, new int[2] { 4, 12 }, new string[] { "Blue", "Bristlenose" }) { }
 }
 
 /// <summary>
@@ -61,11 +57,7 @@ class FishVille : Location
 /// </summary>
 class LargeBodyOfWater : Location
 {
-    Color colorBonus = Color.red;
-    int[] optimalFishingHours = new int[2] { 10, 18 }; 
-
-    public override Color ColorBonus { get { return colorBonus; } }
-    public override int[] OptimalFishingHours { get { return optimalFishingHours; } }
+    public LargeBodyOfWater() : base(Color.red, new int[2] { 10, 18 }, new string[] { "Red", "Freshwater" }) { }
 }
 
 /// <summary>
@@ -73,11 +65,7 @@ class LargeBodyOfWater : Location
 /// </summary>
 class BingoBango : Location
 {
-    Color colorBonus = Color.green;
-    int[] optimalFishingHours = new int[2] { 16, 0 };
-
-    public override Color ColorBonus { get { return colorBonus; } }
-    public override int[] OptimalFishingHours { get { return optimalFishingHours; } }
+    public BingoBango() : base(Color.green, new int[2] { 16, 0 }, new string[] { "Green", "Flabby" }) { }
 }
 
 /// <summary>
@@ -85,9 +73,5 @@ class BingoBango : Location
 /// </summary>
 class HolyShrimp : Location
 {
-    Color colorBonus = Color.yellow;
-    int[] optimalFishingHours = new int[2] { 22, 4 };
-
-    public override Color ColorBonus { get { return colorBonus; } }
-    public override int[] OptimalFishingHours { get { return optimalFishingHours; } }
+    public HolyShrimp() : base(Color.yellow, new int[2] { 22, 4 }, new string[] { "Golden", "Bigeye" }) { }
 }
