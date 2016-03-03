@@ -18,11 +18,11 @@ public class GameManager : MonoBehaviour
 
         LM.Initialize(FishingLocation.BingoBango);
         //Debug.Log(location.CurrentLocColorBonus + ", " + location.CurrentLocOptimalFishingHours[0] + " " + location.CurrentLocOptimalFishingHours[1]);
-        Debug.Log(FishLoot.GenerateName(LM));
+        //Debug.Log(FishLoot.GenerateName(LM));
 
         LM.Initialize(FishingLocation.HolyShrimp);
-        Debug.Log(FishLoot.GenerateName(LM));
-
+        //Debug.Log(FishLoot.GenerateName(LM));
+        Debug.Log(FishLoot.GenerateNameData(LM, clock));
     }
 	
 	void Update ()

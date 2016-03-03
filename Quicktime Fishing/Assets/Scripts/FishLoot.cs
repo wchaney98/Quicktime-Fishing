@@ -1,20 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Text;
+using System.Collections.Generic;
 
+/// <summary>
+/// Static class that generates properties of caught fish
+/// </summary>
 public class FishLoot
 {
     static string[] FishNames = new string[] { "Shiner", "Trout", "Shad", "Guppy" };
 
-    Color[] colors = new Color[] { Color.blue, Color.red, Color.green, Color.yellow };
+    static Color[] colors = new Color[] { Color.blue, Color.red, Color.green, Color.yellow };
 
-    float baseColorChance = 0.1f;
-    float bonusLocationColorAmount = 0.2f;
-    float bonusOptimalFishingHourAmount = 0.2f;
+    static float baseColorChance = 0.1f;
+    static float bonusLocationColorAmount = 0.2f;
+    static float bonusOptimalFishingHourAmount = 0.2f;
 
-    // catch fish, generates name, roll color on each letter
-
-    public static string GenerateName(LocationManager LM)
+    /// <summary>
+    /// Creates a fish data Dictionary that is used to create an actual Fish object
+    /// </summary>
+    /// <param name="LM"></param>
+    /// <param name="clock"></param>
+    /// <returns>Data to create fish object</returns>
+    public static Dictionary<char, Color> GenerateNameData(LocationManager LM, Clock clock)
     {
         StringBuilder name = new StringBuilder();
         int roll = Random.Range(0, LM.CurrentLoc.Prefixes.Length);
@@ -24,11 +32,23 @@ public class FishLoot
         name.Append(" ");
         name.Append(FishNames[Random.Range(0, FishNames.Length)]);
 
-        return name.ToString();
+        Dictionary<char, Color> nameData = new Dictionary<char, Color>();
+        foreach (char letter in name.ToString())
+        {
+            nameData.Add(letter, rollColor(letter, LM, clock));
+        }
+
+        return nameData;
     }
 
-    // include clock and location specific bonuses
-    Color rollColor(char letter, LocationManager LM, Clock clock)
+    /// <summary>
+    /// Rolls the color of a letter of a fish's name. Takes into account time of day and the location
+    /// </summary>
+    /// <param name="letter"></param>
+    /// <param name="LM"></param>
+    /// <param name="clock"></param>
+    /// <returns>The color that letter should be</returns>
+    static Color rollColor(char letter, LocationManager LM, Clock clock)
     {
         float roll = Random.Range(0f, 1f);
         float chance = baseColorChance;
