@@ -6,10 +6,18 @@ using System.Collections.Generic;
 /// <summary>
 /// Static class that generates properties of caught fish
 /// </summary>
-public class FishLoot
+public static class FishLoot
 {
-    static string[] FishNames = new string[] { "Shiner", "Trout", "Shad", "Guppy" };
+    public static Dictionary<Color, string> ColorToMarkup = new Dictionary<Color, string>
+    {
+        { Color.blue, "blue" },
+        { Color.red, "red" },
+        { Color.green, "lime" },
+        { Color.yellow, "yellow" },
+        { Color.grey, "silver" }
+    };
 
+    static string[] FishNames = new string[] { "Shiner", "Trout", "Shad", "Guppy" };
     static Color[] colors = new Color[] { Color.blue, Color.red, Color.green, Color.yellow };
 
     static float baseColorChance = 0.1f;
@@ -22,7 +30,7 @@ public class FishLoot
     /// <param name="LM"></param>
     /// <param name="clock"></param>
     /// <returns>Data to create fish object</returns>
-    public static Dictionary<char, Color> GenerateNameData(LocationManager LM, Clock clock)
+    public static List<KeyValuePair<char, Color>> GenerateNameData(LocationManager LM, Clock clock)
     {
         StringBuilder name = new StringBuilder();
         int roll = Random.Range(0, LM.CurrentLoc.Prefixes.Length);
@@ -32,10 +40,10 @@ public class FishLoot
         name.Append(" ");
         name.Append(FishNames[Random.Range(0, FishNames.Length)]);
 
-        Dictionary<char, Color> nameData = new Dictionary<char, Color>();
+        List<KeyValuePair<char, Color>> nameData = new List<KeyValuePair<char, Color>>();
         foreach (char letter in name.ToString())
         {
-            nameData.Add(letter, rollColor(letter, LM, clock));
+            nameData.Add(new KeyValuePair<char, Color>(letter, rollColor(letter, LM, clock)));
         }
 
         return nameData;
@@ -61,16 +69,16 @@ public class FishLoot
 
         // Add bonus chance to location's bonus color
         Color bonusColor = LM.CurrentLoc.ColorBonus;
-        float bonusColorChance = chance += bonusLocationColorAmount;
-           
+        float bonusColorChance = chance + bonusLocationColorAmount;
+
         // Roll and return a color
-        if (roll <= bonusColorChance)
-        {
-            return bonusColor;
-        } else if (roll <= chance)
+        if (roll <= chance)
         {
             int colorRoll = Random.Range(0, 4);
             return colors[colorRoll];
+        } else if (roll <= bonusColorChance)
+        {
+            return bonusColor;
         } else
         {
             return Color.grey;

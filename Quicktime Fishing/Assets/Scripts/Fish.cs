@@ -5,9 +5,7 @@ using System.Text;
 
 public class Fish
 {
-    // dictionaries dont work with duplicate keys
-    
-    Dictionary<char, Color> fishData = new Dictionary<char, Color>();
+    List<KeyValuePair<char, Color>> fishData;
 
     StringBuilder prefix;
     StringBuilder title;
@@ -15,35 +13,51 @@ public class Fish
     string name;
     public string Name { get { return name; } }
 
-    public Fish(Dictionary<char, Color> fishData)
+    string markupName;
+    public string MarkupName { get { return markupName; } }
+
+    public Fish(List<KeyValuePair<char, Color>> fishData)
     {
         this.fishData = fishData;
 
+        prefix = new StringBuilder();
+        title = new StringBuilder();
+
         bool spaceAppeared = false;
-        foreach(char letter in fishData.Keys)
+        for(int i = 0; i < fishData.Count; i++)
         {
-            if (letter == ' ')
+            if (fishData[i].Key == ' ')
             {
                 spaceAppeared = true;
+                continue;
             }
             if (spaceAppeared)
             {
-                title.Append(letter);
+                title.Append(fishData[i].Key);
             } else
             {
-                prefix.Append(letter);
+                prefix.Append(fishData[i].Key);
             }
         }
-        name = prefix + " " + title;
+        name = prefix.ToString() + " " + title.ToString();
+        markupName = GenerateString();
     }
 	
-    public int GenerateWorth()
+    int GenerateWorth()
     {
         return 0;
     }
 
-    public string GenerateString(bool markup)
+    string GenerateString()
     {
-        return "";
+        StringBuilder markupName = new StringBuilder();
+
+        for (int i = 0; i < fishData.Count; i++)
+        {
+            markupName.Append("<color=" + FishLoot.ColorToMarkup[fishData[i].Value] + ">" + fishData[i].Key + "</color>");
+            //Debug.Log(i + ": " + fishData[i].Value);
+        }
+
+        return markupName.ToString();
     }
 }
