@@ -40,8 +40,6 @@ public class LocationManager
     }
 }
 
-//public enum RarityColor : byte { Blue, Red, Green, Gold }
-
 public enum FishingLocation : byte { FishVille, LargeBodyOfWater, BingoBango, HolyShrimp }
 
 /// <summary>

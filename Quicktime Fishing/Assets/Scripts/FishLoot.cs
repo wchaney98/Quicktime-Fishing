@@ -50,6 +50,28 @@ public static class FishLoot
     }
 
     /// <summary>
+    /// Takes two fish and breeds them
+    /// </summary>
+    /// <param name="fish1">First fish</param>
+    /// <param name="fish2">Fish to combine with first fish</param>
+    /// <returns></returns>
+    public static Fish CombineFish(Fish fish1, Fish fish2)
+    {
+        List<KeyValuePair<char, Color>> newData = new List<KeyValuePair<char, Color>>();
+
+        foreach (KeyValuePair<char, Color> pairOf1 in fish1.FishData)
+        {
+            foreach(KeyValuePair<char, Color> pairOf2 in fish2.FishData)
+            {
+                if (pairOf1.Value == pairOf2.Value)
+                {
+                    newData.Add()
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// Rolls the color of a letter of a fish's name. Takes into account time of day and the location
     /// </summary>
     /// <param name="letter"></param>
@@ -85,11 +107,8 @@ public static class FishLoot
         }       
     }
 
-    // function to generate worth of fish based on number of different colors and how many colored characters
-
-
-    // function to convert the fish to markup text
-
-
-    // fish class to store markup info and backend info
+    public static Fish GetNewFish(LocationManager LM, Clock clock)
+    {
+        return new Fish(GenerateNameData(LM, clock));
+    }
 }

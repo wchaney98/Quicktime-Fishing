@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
         LM.Initialize(FishingLocation.BingoBango);
 
         LM.Initialize(FishingLocation.LargeBodyOfWater);
-        Fish fish = new Fish(FishLoot.GenerateNameData(LM, clock));
+        Fish fish = FishLoot.GetNewFish(LM, clock);
 
         Debug.Log(fish.Name + " " + fish.MarkupName);
     }

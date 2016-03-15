@@ -6,6 +6,7 @@ using System.Text;
 public class Fish
 {
     List<KeyValuePair<char, Color>> fishData;
+    public List<KeyValuePair<char, Color>> FishData { get { return fishData; } }
 
     StringBuilder prefix;
     StringBuilder title;
@@ -42,7 +43,7 @@ public class Fish
         name = prefix.ToString() + " " + title.ToString();
         markupName = GenerateString();
     }
-	
+
     int GenerateWorth()
     {
         return 0;
@@ -55,7 +56,6 @@ public class Fish
         for (int i = 0; i < fishData.Count; i++)
         {
             markupName.Append("<color=" + FishLoot.ColorToMarkup[fishData[i].Value] + ">" + fishData[i].Key + "</color>");
-            //Debug.Log(i + ": " + fishData[i].Value);
         }
 
         return markupName.ToString();
