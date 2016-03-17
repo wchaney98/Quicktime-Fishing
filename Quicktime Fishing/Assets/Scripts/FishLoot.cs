@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Static class that generates properties of caught fish
@@ -17,7 +18,9 @@ public static class FishLoot
         { Color.grey, "silver" }
     };
 
-    static string[] FishNames = new string[] { "Shiner", "Trout", "Shad", "Guppy" };
+
+    static string[] combinationFishPrefixes = new string[] { "Cool", "Epic", "Legendary", "Dud", "Special" };
+    static string[] fishNames = new string[] { "Shiner", "Trout", "Shad", "Guppy" };
     static Color[] colors = new Color[] { Color.blue, Color.red, Color.green, Color.yellow };
 
     static float baseColorChance = 0.1f;
@@ -38,7 +41,7 @@ public static class FishLoot
         string prefix = LM.CurrentLoc.Prefixes[roll];
         name.Append(prefix);
         name.Append(" ");
-        name.Append(FishNames[Random.Range(0, FishNames.Length)]);
+        name.Append(fishNames[Random.Range(0, fishNames.Length)]);
 
         List<KeyValuePair<char, Color>> nameData = new List<KeyValuePair<char, Color>>();
         foreach (char letter in name.ToString())
@@ -57,18 +60,20 @@ public static class FishLoot
     /// <returns></returns>
     public static Fish CombineFish(Fish fish1, Fish fish2)
     {
-        List<KeyValuePair<char, Color>> newData = new List<KeyValuePair<char, Color>>();
+        var newData = new List<KeyValuePair<char, Color>>();
+        
+       
 
-        foreach (KeyValuePair<char, Color> pairOf1 in fish1.FishData)
-        {
-            foreach(KeyValuePair<char, Color> pairOf2 in fish2.FishData)
-            {
-                if (pairOf1.Value == pairOf2.Value)
-                {
-                    newData.Add()
-                }
-            }
-        }
+        // Get a new prefix for the combined fish.. takes first fish's prefix and the second fish's title
+        var roll = Random.Range(0, combinationFishPrefixes.Length);
+        var newPrefixString = combinationFishPrefixes[roll] + " " + fish1.Prefix;
+
+        var newTitleString = fish2.Title;
+
+        // Roll new prefix
+
+        // Add
+
     }
 
     /// <summary>
@@ -78,7 +83,7 @@ public static class FishLoot
     /// <param name="LM"></param>
     /// <param name="clock"></param>
     /// <returns>The color that letter should be</returns>
-    static Color rollColor(char letter, LocationManager LM, Clock clock)
+    private static Color rollColor(char letter, LocationManager LM, Clock clock)
     {
         float roll = Random.Range(0f, 1f);
         float chance = baseColorChance;

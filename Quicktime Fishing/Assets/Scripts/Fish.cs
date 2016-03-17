@@ -9,7 +9,10 @@ public class Fish
     public List<KeyValuePair<char, Color>> FishData { get { return fishData; } }
 
     StringBuilder prefix;
+    public string Prefix { get { return prefix.ToString(); } }
+
     StringBuilder title;
+    public string Title { get { return title.ToString(); } }
 
     string name;
     public string Name { get { return name; } }
