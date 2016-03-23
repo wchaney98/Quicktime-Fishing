@@ -46,10 +46,17 @@ public static class FishLoot
         List<KeyValuePair<char, Color>> nameData = new List<KeyValuePair<char, Color>>();
         foreach (char letter in name.ToString())
         {
-            nameData.Add(new KeyValuePair<char, Color>(letter, rollColor(letter, LM, clock)));
+            nameData.Add(letter == ' '
+                ? new KeyValuePair<char, Color>(letter, Color.gray)
+                : new KeyValuePair<char, Color>(letter, rollColor(letter, LM, clock)));
         }
 
         return nameData;
+    }
+
+    public static List<KeyValuePair<char, Color>> GeneratePrefixData()
+    {
+        return null;
     }
 
     /// <summary>
@@ -57,22 +64,52 @@ public static class FishLoot
     /// </summary>
     /// <param name="fish1">First fish</param>
     /// <param name="fish2">Fish to combine with first fish</param>
+    /// <param name="lm">Location Manager</param>
+    /// <param name="clock">Game clock</param>
     /// <returns></returns>
-    public static Fish CombineFish(Fish fish1, Fish fish2)
+    public static Fish CombineFish(Fish fish1, Fish fish2, LocationManager lm, Clock clock)
     {
-        var newData = new List<KeyValuePair<char, Color>>();
-        
-       
+        fish1.Combined = true;
+        fish2.Combined = true;
+        var newFishData = new List<KeyValuePair<char, Color>>();    
 
         // Get a new prefix for the combined fish.. takes first fish's prefix and the second fish's title
         var roll = Random.Range(0, combinationFishPrefixes.Length);
-        var newPrefixString = combinationFishPrefixes[roll] + " " + fish1.Prefix;
+        var prefix = combinationFishPrefixes[roll];    
 
-        var newTitleString = fish2.Title;
+        // Roll and add new prefix
+        foreach (var letter in prefix)
+        {
+            newFishData.Add(letter == ' '
+                ? new KeyValuePair<char, Color>(letter, Color.gray)
+                : new KeyValuePair<char, Color>(letter, rollColor(letter, lm, clock)));
+        }
 
-        // Roll new prefix
+        // Add space
+        newFishData.Add(new KeyValuePair<char, Color>(' ', Color.gray));
 
-        // Add
+        // Add first fish's prefix data
+        foreach (KeyValuePair<char, Color> pair in fish1.FishData)
+        {
+            if (pair.Key != ' ')
+            {
+                newFishData.Add(pair);
+            }
+            else
+            {
+                newFishData.Add(new KeyValuePair<char, Color>(pair.Key, Color.gray));
+                break;
+            }
+        }
+
+        // Add second fish's title
+        for (var i = fish2.Prefix.Length + 1; i < fish2.FishData.Count; i++)
+        {
+            newFishData.Add(fish2.FishData[i]);      
+        }
+
+        // Return new fish
+        return new Fish(newFishData, lm, true);
 
     }
 
@@ -112,8 +149,8 @@ public static class FishLoot
         }       
     }
 
-    public static Fish GetNewFish(LocationManager LM, Clock clock)
+    public static Fish GetNewFish(LocationManager lm, Clock clock)
     {
-        return new Fish(GenerateNameData(LM, clock));
+        return new Fish(GenerateNameData(lm, clock), lm, false);
     }
 }

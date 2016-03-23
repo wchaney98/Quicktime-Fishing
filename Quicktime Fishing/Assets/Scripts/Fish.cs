@@ -5,22 +5,28 @@ using System.Text;
 
 public class Fish
 {
-    List<KeyValuePair<char, Color>> fishData;
+    private List<KeyValuePair<char, Color>> fishData;
     public List<KeyValuePair<char, Color>> FishData { get { return fishData; } }
 
-    StringBuilder prefix;
+    private bool combined;
+    public bool Combined { get; set; }
+
+    private StringBuilder prefix;
     public string Prefix { get { return prefix.ToString(); } }
 
-    StringBuilder title;
+    private StringBuilder title;
     public string Title { get { return title.ToString(); } }
 
-    string name;
+    private string name;
     public string Name { get { return name; } }
 
-    string markupName;
+    private string markupName;
     public string MarkupName { get { return markupName; } }
 
-    public Fish(List<KeyValuePair<char, Color>> fishData)
+    private FishingLocation fishType;
+    public FishingLocation FishType { get { return fishType; } }
+
+    public Fish(List<KeyValuePair<char, Color>> fishData, LocationManager lm, bool combo)
     {
         this.fishData = fishData;
 
@@ -28,11 +34,22 @@ public class Fish
         title = new StringBuilder();
 
         bool spaceAppeared = false;
+        bool comboSpaceAppeared = !combo;
         for(int i = 0; i < fishData.Count; i++)
         {
             if (fishData[i].Key == ' ')
             {
+                if (!comboSpaceAppeared)
+                {
+                    prefix.Append(" ");
+                    comboSpaceAppeared = true;
+                    continue;
+                }
                 spaceAppeared = true;
+            }
+            if (fishData[i].Key == ' ' && spaceAppeared == true && comboSpaceAppeared)
+            {
+                comboSpaceAppeared = false;
                 continue;
             }
             if (spaceAppeared)
@@ -43,16 +60,18 @@ public class Fish
                 prefix.Append(fishData[i].Key);
             }
         }
-        name = prefix.ToString() + " " + title.ToString();
+        name = prefix + " " + title;
         markupName = GenerateString();
+        fishType = lm.CurrentFishingLoc;
+        combined = false;
     }
 
-    int GenerateWorth()
+    private int GenerateWorth()
     {
         return 0;
     }
 
-    string GenerateString()
+    private string GenerateString()
     {
         StringBuilder markupName = new StringBuilder();
 
